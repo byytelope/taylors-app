@@ -70,18 +70,23 @@ export default function RootLayout() {
               title: "Login",
               presentation: "modal",
               animation: "fade_from_bottom",
-              headerLeft: () => (
-                <Pressable
-                  className="active:bg-zinc-200 dark:active:bg-zinc-800 size-10 justify-center items-center rounded-full mr-5"
-                  onPress={() => router.back()}
-                >
-                  <Ionicons
-                    name="close"
-                    size={20}
-                    color={colorScheme === "light" ? "black" : "grey"}
-                  />
-                </Pressable>
-              ),
+              headerShadowVisible: false,
+              headerBackVisible: Platform.OS === "ios" ? false : true,
+              headerRight:
+                Platform.OS === "ios"
+                  ? () => (
+                      <Pressable
+                        className="bg-zinc-100 active:bg-zinc-200 dark:bg-zinc-900 dark:active:bg-zinc-800 size-8 justify-center items-center rounded-full"
+                        onPress={() => router.back()}
+                      >
+                        <Ionicons
+                          name="close"
+                          size={16}
+                          color={colorScheme === "light" ? "black" : "grey"}
+                        />
+                      </Pressable>
+                    )
+                  : undefined,
             }}
           />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />

@@ -2,13 +2,13 @@ import { useAuth } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect } from "react";
-import { View, useColorScheme } from "react-native";
+import { Pressable, View, useColorScheme } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Butt from "@/components/Butt";
-import Words from "@/components/Words";
 import LogoColor from "@/assets/taylors-logo-color.svg";
 import LogoWhite from "@/assets/taylors-logo-white.svg";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Butt from "@/components/Butt";
+import Words from "@/components/Words";
 
 export default function WelcomeScreen() {
   const { isLoaded, isSignedIn } = useAuth();
@@ -43,18 +43,25 @@ export default function WelcomeScreen() {
       </View>
       <View className="w-full p-5 gap-4">
         <Butt
-          title="Login"
+          title="Student Login"
           onPress={() => router.push("/login")}
           loading={!isLoaded}
         />
-        <Butt
-          title="Go to website"
-          onPress={async () =>
-            WebBrowser.openBrowserAsync("https://taylors.edu.my", {
-              presentationStyle: WebBrowser.WebBrowserPresentationStyle.POPOVER,
-            })
-          }
-        />
+        <View className="items-center">
+          <Pressable
+            className="group rounded-lg p-2"
+            onPress={async () =>
+              WebBrowser.openBrowserAsync("https://taylors.edu.my", {
+                presentationStyle:
+                  WebBrowser.WebBrowserPresentationStyle.POPOVER,
+              })
+            }
+          >
+            <Words className="text-blue-700 dark:text-blue-500 group-active:text-blue-400">
+              Go to website
+            </Words>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
