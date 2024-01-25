@@ -1,4 +1,3 @@
-import { useAuth } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect } from "react";
@@ -9,17 +8,18 @@ import LogoColor from "@/assets/taylors-logo-color.svg";
 import LogoWhite from "@/assets/taylors-logo-white.svg";
 import Butt from "@/components/Butt";
 import Words from "@/components/Words";
+import { useSession } from "@/utils/context";
 
 export default function WelcomeScreen() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoading, session } = useSession();
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (!isLoading && session) {
       router.replace("/(auth)");
     }
-  }, [isLoaded]);
+  }, [isLoading]);
 
   return (
     <View
@@ -45,19 +45,19 @@ export default function WelcomeScreen() {
         <Butt
           title="Student Login"
           onPress={() => router.push("/login")}
-          loading={!isLoaded}
+          loading={isLoading}
         />
         <View className="items-center">
           <Pressable
             className="group rounded-lg p-2"
             onPress={async () =>
-              WebBrowser.openBrowserAsync("https://taylors.edu.my", {
+              await WebBrowser.openBrowserAsync("https://taylors.edu.my", {
                 presentationStyle:
                   WebBrowser.WebBrowserPresentationStyle.POPOVER,
               })
             }
           >
-            <Words className="text-blue-700 dark:text-blue-500 group-active:text-blue-400">
+            <Words className="text-blue-700 dark:!text-blue-500 group-active:text-blue-400  dark:group-active:!text-blue-400">
               Go to website
             </Words>
           </Pressable>
